@@ -8,6 +8,13 @@ import com.taskmaster.modelo.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gestiona la lógica relacionada con las tareas de la aplicación.
+ *
+ * @author Felipe
+ * @version 1.0
+ */
+
 public class GestorTareas {
     private final List<Tarea> tareas;
 

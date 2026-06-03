@@ -5,6 +5,13 @@ import com.taskmaster.modelo.Categoria;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gestiona las categorías de tareas de la aplicación.
+ *
+ * @author Felipe
+ * @version 1.0
+ */
+
 public class GestorCategorias {
     private final List<Categoria> categorias;
 

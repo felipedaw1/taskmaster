@@ -11,47 +11,47 @@ import com.taskmaster.servicio.GestorUsuarios;
 
 import java.time.LocalDate;
 
+/**
+ * Carga datos de ejemplo para inicializar la aplicación.
+ *
+ * @author Felipe
+ * @version 1.0
+ */
 public class DatosIniciales {
 
+    /**
+     * Carga datos iniciales en los gestores de la aplicación.
+     *
+     * @param gestorUsuarios gestor de usuarios
+     * @param gestorCategorias gestor de categorías
+     * @param gestorEstados gestor de estados
+     * @param gestorTareas gestor de tareas
+     */
     public static void cargarDatos(GestorUsuarios gestorUsuarios,
                                    GestorCategorias gestorCategorias,
                                    GestorEstados gestorEstados,
                                    GestorTareas gestorTareas) {
 
-        // Usuarios
-        gestorUsuarios.crearUsuario(new Usuario(1, "admin", "admin@taskmaster.com", "admin123"));
-        gestorUsuarios.crearUsuario(new Usuario(2, "ana", "ana@taskmaster.com", "ana123"));
+        Usuario usuario = new Usuario(1, "Ana", "ana@mail.com", "1234");
+        Categoria categoria = new Categoria(1, "Estudios", "Tareas académicas");
+        Estado estado = gestorEstados.buscarEstadoPorId(1);
 
-        // Categorías
-        gestorCategorias.crearCategoria(new Categoria(1, "Estudios", "Tareas académicas"));
-        gestorCategorias.crearCategoria(new Categoria(2, "Personal", "Tareas personales"));
-        gestorCategorias.crearCategoria(new Categoria(3, "Trabajo", "Tareas laborales"));
+        gestorUsuarios.crearUsuario(usuario);
+        gestorCategorias.crearCategoria(categoria);
 
-        // Los estados ya se cargan en GestorEstados
-
-        // Tareas
-        gestorTareas.crearTarea(new Tarea(
-                1,
-                "Hacer resumen de bases de datos",
-                "Resumir los apuntes del tema 1",
-                LocalDate.of(2026, 6, 3),
-                LocalDate.of(2026, 6, 5),
-                "Empezado por la mañana",
-                gestorUsuarios.buscarUsuarioPorId(1),
-                gestorCategorias.buscarCategoriaPorId(1),
-                gestorEstados.buscarEstadoPorId(1)
-        ));
-
-        gestorTareas.crearTarea(new Tarea(
-                2,
-                "Entregar proyecto intermodular",
-                "Preparar y entregar la memoria final",
-                LocalDate.of(2026, 6, 3),
-                LocalDate.of(2026, 6, 10),
-                "Revisar formato final",
-                gestorUsuarios.buscarUsuarioPorId(2),
-                gestorCategorias.buscarCategoriaPorId(1),
-                gestorEstados.buscarEstadoPorId(2)
-        ));
+        if (estado != null) {
+            Tarea tarea = new Tarea(
+                    1,
+                    "Hacer resumen",
+                    "Resumen de la unidad 1",
+                    LocalDate.now(),
+                    LocalDate.now().plusDays(2),
+                    "Sin observaciones",
+                    usuario,
+                    categoria,
+                    estado
+            );
+            gestorTareas.crearTarea(tarea);
+        }
     }
 }
