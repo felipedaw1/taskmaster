@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">TaskMaster</div>
+        <nav class="nav">
+            <a href="index.html">Inicio</a>
+            <a href="contacto.html">Contacto</a>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="hero">
+            <div>
+                <h1>Panel de control de TaskMaster</h1>
+                <p>Gestiona tus tareas, usuarios, categorías y estados desde una interfaz clara y sencilla.</p>
+                <a class="btn" href="#tareas">Ver tareas</a>
+            </div>
+        </section>
+
+        <section class="dashboard">
+            <div class="card">
+                <h2>Crear tarea</h2>
+                <form class="form">
+                    <label for="titulo">Título</label>
+                    <input type="text" id="titulo" name="titulo">
+
+                    <label for="categoria">Categoría</label>
+                    <select id="categoria" name="categoria">
+                        <option>Estudios</option>
+                        <option>Trabajo</option>
+                        <option>Personal</option>
+                    </select>
+
+                    <label for="fecha">Fecha límite</label>
+                    <input type="date" id="fecha" name="fecha">
+
+                    <button type="submit" class="btn">Guardar tarea</button>
+                </form>
+            </div>
+
+            <div class="card" id="tareas">
+                <h2>Listado de tareas</h2>
+                <div class="task-list">
+                    <article class="task">
+                        <h3>Hacer resumen de bases de datos</h3>
+                        <p>Categoría: Estudios</p>
+                        <span class="status pending">Pendiente</span>
+                    </article>
+
+                    <article class="task">
+                        <h3>Entregar proyecto final</h3>
+                        <p>Categoría: Trabajo</p>
+                        <span class="status progress">En progreso</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 TaskMaster - Gestión eficiente de tareas</p>
+    </footer>
+</body>
+</html>
