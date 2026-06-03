@@ -15,8 +15,12 @@ public class GestorTareas {
         this.tareas = new ArrayList<>();
     }
 
-    public void crearTarea(Tarea tarea) {
+    public boolean crearTarea(Tarea tarea) {
+        if (buscarTareaPorId(tarea.getIdTarea()) != null) {
+            return false;
+        }
         tareas.add(tarea);
+        return true;
     }
 
     public List<Tarea> mostrarTareas() {

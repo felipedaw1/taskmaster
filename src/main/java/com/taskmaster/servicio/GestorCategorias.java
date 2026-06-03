@@ -12,8 +12,12 @@ public class GestorCategorias {
         this.categorias = new ArrayList<>();
     }
 
-    public void crearCategoria(Categoria categoria) {
+    public boolean crearCategoria(Categoria categoria) {
+        if (buscarCategoriaPorId(categoria.getIdCategoria()) != null) {
+            return false;
+        }
         categorias.add(categoria);
+        return true;
     }
 
     public List<Categoria> mostrarCategorias() {

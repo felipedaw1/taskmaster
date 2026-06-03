@@ -12,8 +12,15 @@ public class GestorUsuarios {
         this.usuarios = new ArrayList<>();
     }
 
-    public void crearUsuario(Usuario usuario) {
+    public boolean crearUsuario(Usuario usuario) {
+        if (buscarUsuarioPorId(usuario.getIdUsuario()) != null) {
+            return false;
+        }
+        if (buscarUsuarioPorEmail(usuario.getEmail()) != null) {
+            return false;
+        }
         usuarios.add(usuario);
+        return true;
     }
 
     public List<Usuario> mostrarUsuarios() {

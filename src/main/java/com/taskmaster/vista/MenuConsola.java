@@ -185,8 +185,8 @@ public class MenuConsola {
             return;
         }
 
-        gestorUsuarios.crearUsuario(new Usuario(id, nombre, email, password));
-        System.out.println("Usuario creado correctamente.");
+        boolean creado = gestorUsuarios.crearUsuario(new Usuario(id, nombre, email, password));
+        System.out.println(creado ? "Usuario creado correctamente." : "Ya existe un usuario con ese ID o email.");
     }
 
     private void mostrarUsuarios() {
@@ -211,8 +211,8 @@ public class MenuConsola {
         System.out.print("Descripción: ");
         String descripcion = scanner.nextLine();
 
-        gestorCategorias.crearCategoria(new Categoria(id, nombre, descripcion));
-        System.out.println("Categoría creada correctamente.");
+        boolean creada = gestorCategorias.crearCategoria(new Categoria(id, nombre, descripcion));
+        System.out.println(creada ? "Categoría creada correctamente." : "Ya existe una categoría con ese ID.");
     }
 
     private void mostrarCategorias() {
@@ -273,8 +273,10 @@ public class MenuConsola {
             return;
         }
 
-        gestorTareas.crearTarea(new Tarea(id, titulo, descripcion, fechaCreacion, fechaLimite, observaciones, usuario, categoria, estado));
-        System.out.println("Tarea creada correctamente.");
+        boolean creada = gestorTareas.crearTarea(
+                new Tarea(id, titulo, descripcion, fechaCreacion, fechaLimite, observaciones, usuario, categoria, estado)
+        );
+        System.out.println(creada ? "Tarea creada correctamente." : "Ya existe una tarea con ese ID.");
     }
 
     private void mostrarTareas() {
