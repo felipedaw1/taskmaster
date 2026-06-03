@@ -178,6 +178,13 @@ public class MenuConsola {
         System.out.print("Password: ");
         String password = scanner.nextLine();
 
+        if (!com.taskmaster.util.Validador.validarTextoNoVacio(nombre) ||
+                !com.taskmaster.util.Validador.validarEmail(email) ||
+                !com.taskmaster.util.Validador.validarTextoNoVacio(password)) {
+            System.out.println("Datos de usuario no válidos.");
+            return;
+        }
+
         gestorUsuarios.crearUsuario(new Usuario(id, nombre, email, password));
         System.out.println("Usuario creado correctamente.");
     }
@@ -248,12 +255,23 @@ public class MenuConsola {
         System.out.print("Observaciones: ");
         String observaciones = scanner.nextLine();
 
+        if (!com.taskmaster.util.Validador.validarTextoNoVacio(titulo) ||
+                !com.taskmaster.util.Validador.validarFechaLimite(fechaCreacion, fechaLimite)) {
+            System.out.println("Datos de tarea no válidos.");
+            return;
+        }
+
         System.out.print("ID usuario: ");
         Usuario usuario = gestorUsuarios.buscarUsuarioPorId(Integer.parseInt(scanner.nextLine()));
         System.out.print("ID categoría: ");
         Categoria categoria = gestorCategorias.buscarCategoriaPorId(Integer.parseInt(scanner.nextLine()));
         System.out.print("ID estado: ");
         Estado estado = gestorEstados.buscarEstadoPorId(Integer.parseInt(scanner.nextLine()));
+
+        if (usuario == null || categoria == null || estado == null) {
+            System.out.println("Usuario, categoría o estado no encontrados.");
+            return;
+        }
 
         gestorTareas.crearTarea(new Tarea(id, titulo, descripcion, fechaCreacion, fechaLimite, observaciones, usuario, categoria, estado));
         System.out.println("Tarea creada correctamente.");
