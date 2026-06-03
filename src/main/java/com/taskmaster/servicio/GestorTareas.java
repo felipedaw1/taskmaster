@@ -32,6 +32,22 @@ public class GestorTareas {
         return null;
     }
 
+    public boolean editarTarea(Tarea tareaActualizada) {
+        Tarea tarea = buscarTareaPorId(tareaActualizada.getIdTarea());
+        if (tarea != null) {
+            tarea.setTitulo(tareaActualizada.getTitulo());
+            tarea.setDescripcion(tareaActualizada.getDescripcion());
+            tarea.setFechaCreacion(tareaActualizada.getFechaCreacion());
+            tarea.setFechaLimite(tareaActualizada.getFechaLimite());
+            tarea.setObservaciones(tareaActualizada.getObservaciones());
+            tarea.setUsuario(tareaActualizada.getUsuario());
+            tarea.setCategoria(tareaActualizada.getCategoria());
+            tarea.setEstado(tareaActualizada.getEstado());
+            return true;
+        }
+        return false;
+    }
+
     public boolean eliminarTarea(int idTarea) {
         Tarea tarea = buscarTareaPorId(idTarea);
         if (tarea != null) {

@@ -94,13 +94,13 @@ public class MenuConsola {
 
             switch (opcion) {
                 case 1 -> crearTarea();
-                case 2 -> System.out.println("Funcionalidad pendiente de implementar.");
-                case 3 -> System.out.println("Funcionalidad pendiente de implementar.");
+                case 2 -> editarTarea();
+                case 3 -> eliminarTarea();
                 case 4 -> mostrarTareas();
-                case 5 -> System.out.println("Funcionalidad pendiente de implementar.");
-                case 6 -> System.out.println("Funcionalidad pendiente de implementar.");
-                case 7 -> System.out.println("Funcionalidad pendiente de implementar.");
-                case 8 -> System.out.println("Funcionalidad pendiente de implementar.");
+                case 5 -> marcarTareaComoCompletada();
+                case 6 -> filtrarTareasPorCategoria();
+                case 7 -> mostrarTareasDeUsuario();
+                case 8 -> buscarTareaPorId();
                 case 0 -> System.out.println("Volviendo al menú principal...");
                 default -> System.out.println("Opción no válida.");
             }
@@ -261,5 +261,96 @@ public class MenuConsola {
         for (Tarea tarea : gestorTareas.mostrarTareas()) {
             System.out.println(tarea);
         }
+    }
+
+    private void editarTarea() {
+        System.out.print("ID de la tarea a editar: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        Tarea tareaExistente = gestorTareas.buscarTareaPorId(id);
+        if (tareaExistente == null) {
+            System.out.println("Tarea no encontrada.");
+            return;
+        }
+
+        System.out.print("Nuevo título: ");
+        String titulo = scanner.nextLine();
+        System.out.print("Nueva descripción: ");
+        String descripcion = scanner.nextLine();
+        System.out.print("Nueva fecha creación (YYYY-MM-DD): ");
+        LocalDate fechaCreacion = LocalDate.parse(scanner.nextLine());
+        System.out.print("Nueva fecha límite (YYYY-MM-DD): ");
+        LocalDate fechaLimite = LocalDate.parse(scanner.nextLine());
+        System.out.print("Nuevas observaciones: ");
+        String observaciones = scanner.nextLine();
+
+        System.out.print("Nuevo ID usuario: ");
+        Usuario usuario = gestorUsuarios.buscarUsuarioPorId(Integer.parseInt(scanner.nextLine()));
+        System.out.print("Nuevo ID categoría: ");
+        Categoria categoria = gestorCategorias.buscarCategoriaPorId(Integer.parseInt(scanner.nextLine()));
+        System.out.print("Nuevo ID estado: ");
+        Estado estado = gestorEstados.buscarEstadoPorId(Integer.parseInt(scanner.nextLine()));
+
+        Tarea tareaActualizada = new Tarea(id, titulo, descripcion, fechaCreacion, fechaLimite, observaciones, usuario, categoria, estado);
+        boolean editada = gestorTareas.editarTarea(tareaActualizada);
+
+        System.out.println(editada ? "Tarea editada correctamente." : "No se pudo editar la tarea.");
+    }
+
+    private void eliminarTarea() {
+        System.out.print("ID de la tarea a eliminar: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        boolean eliminada = gestorTareas.eliminarTarea(id);
+        System.out.println(eliminada ? "Tarea eliminada correctamente." : "Tarea no encontrada.");
+    }
+
+    private void filtrarTareasPorCategoria() {
+        System.out.print("ID de categoría: ");
+        int idCategoria = Integer.parseInt(scanner.nextLine());
+
+        Categoria categoria = gestorCategorias.buscarCategoriaPorId(idCategoria);
+        if (categoria == null) {
+            System.out.println("Categoría no encontrada.");
+            return;
+        }
+
+        List<Tarea> filtradas = gestorTareas.filtrarTareasPorCategoria(categoria);
+        for (Tarea tarea : filtradas) {
+            System.out.println(tarea);
+        }
+    }
+
+    private void mostrarTareasDeUsuario() {
+        System.out.print("ID de usuario: ");
+        int idUsuario = Integer.parseInt(scanner.nextLine());
+
+        Usuario usuario = gestorUsuarios.buscarUsuarioPorId(idUsuario);
+        if (usuario == null) {
+            System.out.println("Usuario no encontrado.");
+            return;
+        }
+
+        List<Tarea> tareasUsuario = gestorTareas.mostrarTareasDeUsuario(usuario);
+        for (Tarea tarea : tareasUsuario) {
+            System.out.println(tarea);
+        }
+    }
+
+    private void buscarTareaPorId() {
+        System.out.print("ID de tarea: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        Tarea tarea = gestorTareas.buscarTareaPorId(id);
+        System.out.println(tarea != null ? tarea : "Tarea no encontrada.");
+    }
+
+    private void marcarTareaComoCompletada() {
+        System.out.print("ID de la tarea: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        Estado completada = gestorEstados.buscarEstadoPorId(3); // Completada
+        boolean actualizada = gestorTareas.marcarTareaComoCompletada(id, completada);
+
+        System.out.println(actualizada ? "Tarea marcada como completada." : "Tarea no encontrada.");
     }
 }
