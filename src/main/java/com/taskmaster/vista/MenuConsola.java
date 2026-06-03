@@ -8,6 +8,7 @@ import com.taskmaster.servicio.GestorCategorias;
 import com.taskmaster.servicio.GestorEstados;
 import com.taskmaster.servicio.GestorTareas;
 import com.taskmaster.servicio.GestorUsuarios;
+import com.taskmaster.util.DatosIniciales;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,6 +27,7 @@ public class MenuConsola {
         this.gestorCategorias = new GestorCategorias();
         this.gestorEstados = new GestorEstados();
         this.gestorTareas = new GestorTareas();
+        DatosIniciales.cargarDatos(gestorUsuarios, gestorCategorias, gestorEstados, gestorTareas);
     }
 
     public void mostrarMenuPrincipal() {
