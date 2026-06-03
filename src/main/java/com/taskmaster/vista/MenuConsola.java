@@ -9,6 +9,8 @@ import com.taskmaster.servicio.GestorEstados;
 import com.taskmaster.servicio.GestorTareas;
 import com.taskmaster.servicio.GestorUsuarios;
 import com.taskmaster.util.DatosIniciales;
+import com.taskmaster.util.EntradaConsola;
+import com.taskmaster.util.Validador;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.Scanner;
 
 public class MenuConsola {
     private final Scanner scanner;
+    private final EntradaConsola entradaConsola;
     private final GestorUsuarios gestorUsuarios;
     private final GestorCategorias gestorCategorias;
     private final GestorEstados gestorEstados;
@@ -23,10 +26,12 @@ public class MenuConsola {
 
     public MenuConsola() {
         this.scanner = new Scanner(System.in);
+        this.entradaConsola = new EntradaConsola(scanner);
         this.gestorUsuarios = new GestorUsuarios();
         this.gestorCategorias = new GestorCategorias();
         this.gestorEstados = new GestorEstados();
         this.gestorTareas = new GestorTareas();
+
         DatosIniciales.cargarDatos(gestorUsuarios, gestorCategorias, gestorEstados, gestorTareas);
     }
 
@@ -42,8 +47,7 @@ public class MenuConsola {
             System.out.println("4. Gestionar estados");
             System.out.println("5. Consultas");
             System.out.println("0. Salir");
-            System.out.print("Elige una opción: ");
-            opcion = Integer.parseInt(scanner.nextLine());
+            opcion = entradaConsola.leerEntero("Elige una opción: ");
 
             switch (opcion) {
                 case 1 -> menuUsuarios();
@@ -65,8 +69,7 @@ public class MenuConsola {
             System.out.println("2. Mostrar usuarios");
             System.out.println("3. Buscar usuario por ID");
             System.out.println("0. Volver");
-            System.out.print("Elige una opción: ");
-            opcion = Integer.parseInt(scanner.nextLine());
+            opcion = entradaConsola.leerEntero("Elige una opción: ");
 
             switch (opcion) {
                 case 1 -> crearUsuario();
@@ -91,8 +94,7 @@ public class MenuConsola {
             System.out.println("7. Mostrar tareas de un usuario");
             System.out.println("8. Buscar tarea por ID");
             System.out.println("0. Volver");
-            System.out.print("Elige una opción: ");
-            opcion = Integer.parseInt(scanner.nextLine());
+            opcion = entradaConsola.leerEntero("Elige una opción: ");
 
             switch (opcion) {
                 case 1 -> crearTarea();
@@ -117,8 +119,7 @@ public class MenuConsola {
             System.out.println("2. Mostrar categorías");
             System.out.println("3. Buscar categoría por ID");
             System.out.println("0. Volver");
-            System.out.print("Elige una opción: ");
-            opcion = Integer.parseInt(scanner.nextLine());
+            opcion = entradaConsola.leerEntero("Elige una opción: ");
 
             switch (opcion) {
                 case 1 -> crearCategoria();
@@ -137,8 +138,7 @@ public class MenuConsola {
             System.out.println("1. Mostrar estados");
             System.out.println("2. Buscar estado por ID");
             System.out.println("0. Volver");
-            System.out.print("Elige una opción: ");
-            opcion = Integer.parseInt(scanner.nextLine());
+            opcion = entradaConsola.leerEntero("Elige una opción: ");
 
             switch (opcion) {
                 case 1 -> mostrarEstados();
@@ -156,8 +156,7 @@ public class MenuConsola {
             System.out.println("1. Mostrar tareas por estado");
             System.out.println("2. Mostrar tareas completadas");
             System.out.println("0. Volver");
-            System.out.print("Elige una opción: ");
-            opcion = Integer.parseInt(scanner.nextLine());
+            opcion = entradaConsola.leerEntero("Elige una opción: ");
 
             switch (opcion) {
                 case 1 -> System.out.println("Funcionalidad pendiente de implementar.");
@@ -169,18 +168,14 @@ public class MenuConsola {
     }
 
     private void crearUsuario() {
-        System.out.print("ID usuario: ");
-        int id = Integer.parseInt(scanner.nextLine());
-        System.out.print("Nombre usuario: ");
-        String nombre = scanner.nextLine();
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
-        System.out.print("Password: ");
-        String password = scanner.nextLine();
+        int id = entradaConsola.leerEntero("ID usuario: ");
+        String nombre = entradaConsola.leerTexto("Nombre usuario: ");
+        String email = entradaConsola.leerTexto("Email: ");
+        String password = entradaConsola.leerTexto("Password: ");
 
-        if (!com.taskmaster.util.Validador.validarTextoNoVacio(nombre) ||
-                !com.taskmaster.util.Validador.validarEmail(email) ||
-                !com.taskmaster.util.Validador.validarTextoNoVacio(password)) {
+        if (!Validador.validarTextoNoVacio(nombre) ||
+                !Validador.validarEmail(email) ||
+                !Validador.validarTextoNoVacio(password)) {
             System.out.println("Datos de usuario no válidos.");
             return;
         }
@@ -197,19 +192,20 @@ public class MenuConsola {
     }
 
     private void buscarUsuarioPorId() {
-        System.out.print("ID usuario: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        int id = entradaConsola.leerEntero("ID usuario: ");
         Usuario usuario = gestorUsuarios.buscarUsuarioPorId(id);
         System.out.println(usuario != null ? usuario : "Usuario no encontrado.");
     }
 
     private void crearCategoria() {
-        System.out.print("ID categoría: ");
-        int id = Integer.parseInt(scanner.nextLine());
-        System.out.print("Nombre: ");
-        String nombre = scanner.nextLine();
-        System.out.print("Descripción: ");
-        String descripcion = scanner.nextLine();
+        int id = entradaConsola.leerEntero("ID categoría: ");
+        String nombre = entradaConsola.leerTexto("Nombre: ");
+        String descripcion = entradaConsola.leerTexto("Descripción: ");
+
+        if (!Validador.validarTextoNoVacio(nombre)) {
+            System.out.println("El nombre de la categoría no puede estar vacío.");
+            return;
+        }
 
         boolean creada = gestorCategorias.crearCategoria(new Categoria(id, nombre, descripcion));
         System.out.println(creada ? "Categoría creada correctamente." : "Ya existe una categoría con ese ID.");
@@ -222,8 +218,7 @@ public class MenuConsola {
     }
 
     private void buscarCategoriaPorId() {
-        System.out.print("ID categoría: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        int id = entradaConsola.leerEntero("ID categoría: ");
         Categoria categoria = gestorCategorias.buscarCategoriaPorId(id);
         System.out.println(categoria != null ? categoria : "Categoría no encontrada.");
     }
@@ -235,48 +230,43 @@ public class MenuConsola {
     }
 
     private void buscarEstadoPorId() {
-        System.out.print("ID estado: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        int id = entradaConsola.leerEntero("ID estado: ");
         Estado estado = gestorEstados.buscarEstadoPorId(id);
         System.out.println(estado != null ? estado : "Estado no encontrado.");
     }
 
     private void crearTarea() {
-        System.out.print("ID tarea: ");
-        int id = Integer.parseInt(scanner.nextLine());
-        System.out.print("Título: ");
-        String titulo = scanner.nextLine();
-        System.out.print("Descripción: ");
-        String descripcion = scanner.nextLine();
-        System.out.print("Fecha creación (YYYY-MM-DD): ");
-        LocalDate fechaCreacion = LocalDate.parse(scanner.nextLine());
-        System.out.print("Fecha límite (YYYY-MM-DD): ");
-        LocalDate fechaLimite = LocalDate.parse(scanner.nextLine());
-        System.out.print("Observaciones: ");
-        String observaciones = scanner.nextLine();
+        int id = entradaConsola.leerEntero("ID tarea: ");
+        String titulo = entradaConsola.leerTexto("Título: ");
+        String descripcion = entradaConsola.leerTexto("Descripción: ");
+        LocalDate fechaCreacion = LocalDate.parse(entradaConsola.leerTexto("Fecha creación (YYYY-MM-DD): "));
+        LocalDate fechaLimite = LocalDate.parse(entradaConsola.leerTexto("Fecha límite (YYYY-MM-DD): "));
+        String observaciones = entradaConsola.leerTexto("Observaciones: ");
 
-        if (!com.taskmaster.util.Validador.validarTextoNoVacio(titulo) ||
-                !com.taskmaster.util.Validador.validarFechaLimite(fechaCreacion, fechaLimite)) {
+        if (!Validador.validarTextoNoVacio(titulo) || !Validador.validarFechaLimite(fechaCreacion, fechaLimite)) {
             System.out.println("Datos de tarea no válidos.");
             return;
         }
 
-        System.out.print("ID usuario: ");
-        Usuario usuario = gestorUsuarios.buscarUsuarioPorId(Integer.parseInt(scanner.nextLine()));
-        System.out.print("ID categoría: ");
-        Categoria categoria = gestorCategorias.buscarCategoriaPorId(Integer.parseInt(scanner.nextLine()));
-        System.out.print("ID estado: ");
-        Estado estado = gestorEstados.buscarEstadoPorId(Integer.parseInt(scanner.nextLine()));
+        Usuario usuario = gestorUsuarios.buscarUsuarioPorId(entradaConsola.leerEntero("ID usuario: "));
+        Categoria categoria = gestorCategorias.buscarCategoriaPorId(entradaConsola.leerEntero("ID categoría: "));
+        Estado estado = gestorEstados.buscarEstadoPorId(entradaConsola.leerEntero("ID estado: "));
 
         if (usuario == null || categoria == null || estado == null) {
             System.out.println("Usuario, categoría o estado no encontrados.");
             return;
         }
 
-        boolean creada = gestorTareas.crearTarea(
-                new Tarea(id, titulo, descripcion, fechaCreacion, fechaLimite, observaciones, usuario, categoria, estado)
-        );
+        boolean creada = gestorTareas.crearTarea(new Tarea(id, titulo, descripcion, fechaCreacion, fechaLimite, observaciones, usuario, categoria, estado));
         System.out.println(creada ? "Tarea creada correctamente." : "Ya existe una tarea con ese ID.");
+    }
+
+    private void editarTarea() {
+        System.out.println("Funcionalidad pendiente de refinar.");
+    }
+
+    private void eliminarTarea() {
+        System.out.println("Funcionalidad pendiente de refinar.");
     }
 
     private void mostrarTareas() {
@@ -285,94 +275,21 @@ public class MenuConsola {
         }
     }
 
-    private void editarTarea() {
-        System.out.print("ID de la tarea a editar: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        Tarea tareaExistente = gestorTareas.buscarTareaPorId(id);
-        if (tareaExistente == null) {
-            System.out.println("Tarea no encontrada.");
-            return;
-        }
-
-        System.out.print("Nuevo título: ");
-        String titulo = scanner.nextLine();
-        System.out.print("Nueva descripción: ");
-        String descripcion = scanner.nextLine();
-        System.out.print("Nueva fecha creación (YYYY-MM-DD): ");
-        LocalDate fechaCreacion = LocalDate.parse(scanner.nextLine());
-        System.out.print("Nueva fecha límite (YYYY-MM-DD): ");
-        LocalDate fechaLimite = LocalDate.parse(scanner.nextLine());
-        System.out.print("Nuevas observaciones: ");
-        String observaciones = scanner.nextLine();
-
-        System.out.print("Nuevo ID usuario: ");
-        Usuario usuario = gestorUsuarios.buscarUsuarioPorId(Integer.parseInt(scanner.nextLine()));
-        System.out.print("Nuevo ID categoría: ");
-        Categoria categoria = gestorCategorias.buscarCategoriaPorId(Integer.parseInt(scanner.nextLine()));
-        System.out.print("Nuevo ID estado: ");
-        Estado estado = gestorEstados.buscarEstadoPorId(Integer.parseInt(scanner.nextLine()));
-
-        Tarea tareaActualizada = new Tarea(id, titulo, descripcion, fechaCreacion, fechaLimite, observaciones, usuario, categoria, estado);
-        boolean editada = gestorTareas.editarTarea(tareaActualizada);
-
-        System.out.println(editada ? "Tarea editada correctamente." : "No se pudo editar la tarea.");
-    }
-
-    private void eliminarTarea() {
-        System.out.print("ID de la tarea a eliminar: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        boolean eliminada = gestorTareas.eliminarTarea(id);
-        System.out.println(eliminada ? "Tarea eliminada correctamente." : "Tarea no encontrada.");
+    private void marcarTareaComoCompletada() {
+        System.out.println("Funcionalidad pendiente de refinar.");
     }
 
     private void filtrarTareasPorCategoria() {
-        System.out.print("ID de categoría: ");
-        int idCategoria = Integer.parseInt(scanner.nextLine());
-
-        Categoria categoria = gestorCategorias.buscarCategoriaPorId(idCategoria);
-        if (categoria == null) {
-            System.out.println("Categoría no encontrada.");
-            return;
-        }
-
-        List<Tarea> filtradas = gestorTareas.filtrarTareasPorCategoria(categoria);
-        for (Tarea tarea : filtradas) {
-            System.out.println(tarea);
-        }
+        System.out.println("Funcionalidad pendiente de refinar.");
     }
 
     private void mostrarTareasDeUsuario() {
-        System.out.print("ID de usuario: ");
-        int idUsuario = Integer.parseInt(scanner.nextLine());
-
-        Usuario usuario = gestorUsuarios.buscarUsuarioPorId(idUsuario);
-        if (usuario == null) {
-            System.out.println("Usuario no encontrado.");
-            return;
-        }
-
-        List<Tarea> tareasUsuario = gestorTareas.mostrarTareasDeUsuario(usuario);
-        for (Tarea tarea : tareasUsuario) {
-            System.out.println(tarea);
-        }
+        System.out.println("Funcionalidad pendiente de refinar.");
     }
 
     private void buscarTareaPorId() {
-        System.out.print("ID de tarea: ");
-        int id = Integer.parseInt(scanner.nextLine());
+        int id = entradaConsola.leerEntero("ID tarea: ");
         Tarea tarea = gestorTareas.buscarTareaPorId(id);
         System.out.println(tarea != null ? tarea : "Tarea no encontrada.");
-    }
-
-    private void marcarTareaComoCompletada() {
-        System.out.print("ID de la tarea: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        Estado completada = gestorEstados.buscarEstadoPorId(3); // Completada
-        boolean actualizada = gestorTareas.marcarTareaComoCompletada(id, completada);
-
-        System.out.println(actualizada ? "Tarea marcada como completada." : "Tarea no encontrada.");
     }
 }
